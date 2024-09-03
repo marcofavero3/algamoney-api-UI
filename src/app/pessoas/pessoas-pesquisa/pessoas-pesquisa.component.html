@@ -1,0 +1,60 @@
+<div class="container">
+    <div class="grid">
+      <div class="col-12">
+        <h1>Pessoas</h1>
+      </div>
+  
+      <div class="col-12 p-fluid">
+        <label for="nome">Nome</label>
+        <input pInputText id="nome" type="text">
+      </div>
+  
+      <div class="col-12">
+        <button pButton type="submit" label="Pesquisar" class="p-button-primary"></button>
+      </div>
+    </div>
+  
+    <div class="grid">
+      <div class="col-12">
+        <p-table [value]="pessoas" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Nome</th>
+              <th>Cidade</th>
+              <th>Estado</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </ng-template>
+  
+          <ng-template pTemplate="body" let-pessoa>
+            <tr>
+              <td>{{ pessoa.nome }}</td>
+              <td>{{ pessoa.cidade }}</td>
+              <td>{{ pessoa.estado }}</td>
+              <td>
+                <a href="javascript:;" [pTooltip]="pessoa.ativo ? 'Desativar' : 'Ativar'" tooltipPosition="top">
+                  {{ pessoa.ativo ? 'Ativo' : 'Inativo' }}
+                </a>
+              </td>
+              <td class="col-acoes">
+                <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" pTooltip="Editar" tooltipPosition="top"></button>
+                <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger" pTooltip="Excluir" tooltipPosition="top"></button>
+              </td>
+            </tr>
+          </ng-template>
+  
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5">Nenhuma pessoa encontrada</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+  
+      <div class="col-12">
+        <button pButton label="Nova Pessoa" icon="pi pi-plus" class="p-button-primary"></button>
+      </div>
+    </div>
+  </div>
+  

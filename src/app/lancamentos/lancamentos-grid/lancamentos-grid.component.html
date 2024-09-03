@@ -1,0 +1,32 @@
+<div class="grid">
+    <div class="col-12">
+      <p-table [value]="lancamentos" [paginator]="true" [rows]="2" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Pessoa</th>
+            <th>Descrição</th>
+            <th class="col-data-header">Vencimento</th>
+            <th class="col-data-header">Pagamento</th>
+            <th class="col-valor-header">Valor</th>
+            <th class="col-acoes"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-lancamento>
+          <tr>
+            <td>{{ lancamento.pessoa }}</td>
+            <td>{{ lancamento.descricao }}</td>
+            <td class="col-data">{{ lancamento.dataVencimento | date:'dd/MM/y' }}</td>
+            <td class="col-data">{{ lancamento.dataPagamento | date:'dd/MM/y' }}</td>
+            <td class="col-valor" [ngStyle]="{'color': lancamento.tipo === 'DESPESA' ? 'red' : 'blue'}">
+              {{ lancamento.valor | number:'1.2-2' }}
+            </td>
+            <td class="col-acoes">
+              <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" pTooltip="Editar" tooltipPosition="top"></button>
+              <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger" pTooltip="Excluir" tooltipPosition="top"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+  
