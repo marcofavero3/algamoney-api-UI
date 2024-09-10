@@ -13,11 +13,10 @@ import { PessoaCadastroComponent } from './pessoa-cadastro/pessoa-cadastro.compo
 import { PessoasGridComponent } from './pessoas-grid/pessoas-grid.component';
 import { PessoasPesquisaComponent } from './pessoas-pesquisa/pessoas-pesquisa.component';
 
-
 @NgModule({
   declarations: [
     PessoaCadastroComponent,
-    PessoasGridComponent,
+    PessoasGridComponent, // Declaração do componente PessoasGridComponent
     PessoasPesquisaComponent
   ],
   imports: [

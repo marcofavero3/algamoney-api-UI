@@ -1,4 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+
+import { Lancamento } from '../../core/model';
+import { ErrorHandlerService } from '../../core/error-handler.service';
+import { PessoaService } from '../../pessoas/pessoa.service';
+import { LancamentoService } from '../lancamento.service';
+import { CategoriaService } from '../../categorias/categoria.service';
 
 @Component({
   selector: 'app-lancamento-cadastro',
@@ -7,34 +15,51 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LancamentoCadastroComponent implements OnInit {
 
+  lancamento: Lancamento = new Lancamento();
+  categorias: any[] = [];
+  pessoas: any[] = [];
+
   tipos = [
     { label: 'Receita', value: 'RECEITA' },
     { label: 'Despesa', value: 'DESPESA' },
   ];
 
-  categorias = [
-    { label: 'Alimentação', value: 1 },
-    { label: 'Transporte', value: 2 },
-  ];
-
-  pessoas = [
-    { label: 'João da Silva', value: 4 },
-    { label: 'Sebastião Souza', value: 9 },
-    { label: 'Maria Abadia', value: 3 },
-  ];
-
-  tipoSelecionado: string | null = null;
-  vencimentoSelecionado: Date | null = null;
-  pagamentoRecebimentoSelecionado: Date | null = null;
-  descricao: string = '';
-  valor: number | null = null;
-  categoriaSelecionada: number | null = null;
-  pessoaSelecionada: number | null = null;
-  observacao: string = '';
-
-  constructor() { }
+  constructor(
+    private categoriaService: CategoriaService,
+    private pessoaService: PessoaService,
+    private lancamentoService: LancamentoService,
+    private messageService: MessageService,
+    private errorHandler: ErrorHandlerService
+  ) { }
 
   ngOnInit(): void {
+    this.carregarCategorias();
+    this.carregarPessoas();
   }
 
+  carregarCategorias() {
+    return this.categoriaService.listarTodas()
+      .then(categorias => {
+        this.categorias = categorias.map((c: any) => ({ label: c.nome, value: c.codigo }));
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  carregarPessoas() {
+    this.pessoaService.listarTodas()
+      .then(pessoas => {
+        this.pessoas = pessoas.map((p: any) => ({ label: p.nome, value: p.codigo }));
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  salvar(form: NgForm) {
+    this.lancamentoService.adicionar(this.lancamento)
+      .then(() => {
+        this.messageService.add({ severity: 'success', detail: 'Lançamento adicionado com sucesso!' });
+        form.reset();
+        this.lancamento = new Lancamento();
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+  }
 }

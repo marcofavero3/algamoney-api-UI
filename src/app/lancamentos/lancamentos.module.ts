@@ -16,6 +16,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { SharedModule } from '../shared/shared.module';
 import { LancamentoCadastroComponent } from './lancamento-cadastro/lancamento-cadastro.component';
 import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
+import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.component'; // Importação do grid de lançamentos
 
 @NgModule({
   imports: [
@@ -33,15 +34,17 @@ import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos
     SelectButtonModule,
     DropdownModule,
 
-    SharedModule
+    SharedModule // Certifique-se que o SharedModule esteja configurado corretamente
   ],
   declarations: [
     LancamentoCadastroComponent,
-    LancamentosPesquisaComponent
+    LancamentosPesquisaComponent,
+    LancamentosGridComponent // Declaração do grid de lançamentos
   ],
   exports: [
     LancamentoCadastroComponent,
-    LancamentosPesquisaComponent
+    LancamentosPesquisaComponent,
+    LancamentosGridComponent // Exportação do grid de lançamentos
   ]
 })
 export class LancamentosModule { }

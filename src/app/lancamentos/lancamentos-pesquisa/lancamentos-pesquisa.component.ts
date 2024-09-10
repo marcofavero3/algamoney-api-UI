@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { LancamentoFiltro, LancamentoService } from './../lancamento.service';
 
 @Component({
@@ -9,10 +8,9 @@ import { LancamentoFiltro, LancamentoService } from './../lancamento.service';
 })
 export class LancamentosPesquisaComponent implements OnInit {
 
-  descricao?: string;
-  dataVencimentoInicio?: Date;
-  dataVencimentoFim?: Date;
+  filtro: LancamentoFiltro = new LancamentoFiltro();
   lancamentos: any[] = [];
+  totalRegistros = 0;
 
   constructor(private lancamentoService: LancamentoService) { }
 
@@ -20,14 +18,26 @@ export class LancamentosPesquisaComponent implements OnInit {
     this.pesquisar();
   }
 
-  pesquisar(): void {
-    const filtro: LancamentoFiltro = {
-      descricao: this.descricao,
-      dataVencimentoInicio: this.dataVencimentoInicio,
-      dataVencimentoFim: this.dataVencimentoFim
-    }
+  pesquisar(pagina = 0): void {
+    this.filtro.pagina = pagina;
+    this.lancamentoService.pesquisar(this.filtro)
+      .then(resultado => {
+        this.lancamentos = resultado.lancamentos;
+        this.totalRegistros = resultado.total;
+      });
+  }
 
-    this.lancamentoService.pesquisar(filtro)
-      .then(lancamentos => this.lancamentos = lancamentos);
+  aoMudarPagina(event: any): void {
+    const pagina = event.first / event.rows;
+    this.pesquisar(pagina);
+  }
+
+  confirmarExclusao(lancamento: any): void {
+    if (confirm(`Tem certeza que deseja excluir o lançamento ${lancamento.descricao}?`)) {
+      this.lancamentoService.excluir(lancamento.codigo)
+        .then(() => {
+          this.pesquisar();
+        });
+    }
   }
 }
