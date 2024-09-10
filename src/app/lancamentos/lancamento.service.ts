@@ -1,9 +1,9 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Lancamento } from '../core/model';
 import { firstValueFrom } from 'rxjs';
-import { Lancamento } from '../core/model';  // Certifique-se de importar o modelo correto
 
-// Classe para filtro de lançamentos
 export class LancamentoFiltro {
   descricao?: string;
   dataVencimentoInicio?: Date;
@@ -16,11 +16,11 @@ export class LancamentoFiltro {
   providedIn: 'root'
 })
 export class LancamentoService {
-  private lancamentosUrl = 'http://localhost:8080/lancamentos';
 
-  constructor(private http: HttpClient) { }
+  lancamentosUrl = 'http://localhost:8080/lancamentos';
 
-  // Método para pesquisar lançamentos com filtro
+  constructor(private http: HttpClient, private datePipe: DatePipe) {}
+
   pesquisar(filtro: LancamentoFiltro): Promise<any> {
     const headers = new HttpHeaders()
       .append('Authorization', 'Bearer YOUR_TOKEN_HERE'); // Substitua com o token correto
@@ -34,11 +34,11 @@ export class LancamentoService {
     }
 
     if (filtro.dataVencimentoInicio) {
-      params = params.set('dataVencimentoDe', filtro.dataVencimentoInicio.toISOString());
+      params = params.set('dataVencimentoDe', this.datePipe.transform(filtro.dataVencimentoInicio, 'yyyy-MM-dd')!);
     }
 
     if (filtro.dataVencimentoFim) {
-      params = params.set('dataVencimentoAte', filtro.dataVencimentoFim.toISOString());
+      params = params.set('dataVencimentoAte', this.datePipe.transform(filtro.dataVencimentoFim, 'yyyy-MM-dd')!);
     }
 
     return firstValueFrom(
@@ -58,7 +58,6 @@ export class LancamentoService {
     });
   }
 
-  // Método para adicionar um novo lançamento
   adicionar(lancamento: Lancamento): Promise<Lancamento> {
     const headers = new HttpHeaders()
       .append('Authorization', 'Bearer YOUR_TOKEN_HERE') // Substitua com o token correto
@@ -72,7 +71,37 @@ export class LancamentoService {
     });
   }
 
-  // Método para excluir um lançamento
+  atualizar(lancamento: Lancamento): Promise<Lancamento> {
+    const headers = new HttpHeaders()
+      .append('Authorization', 'Bearer YOUR_TOKEN_HERE') // Substitua com o token correto
+      .append('Content-Type', 'application/json');
+
+    return firstValueFrom(
+      this.http.put<Lancamento>(`${this.lancamentosUrl}/${lancamento.codigo}`, lancamento, { headers })
+    ).then((response: any) => {
+      this.converterStringsParaDatas([response]);
+      return response;
+    }).catch(erro => {
+      console.error('Erro ao atualizar lançamento', erro); // Tratamento de erro
+      throw erro;
+    });
+  }
+
+  buscarPorCodigo(codigo: number): Promise<Lancamento> {
+    const headers = new HttpHeaders()
+      .append('Authorization', 'Bearer YOUR_TOKEN_HERE'); // Substitua com o token correto
+
+    return firstValueFrom(
+      this.http.get<any>(`${this.lancamentosUrl}/${codigo}`, { headers })
+    ).then((response: any) => {
+      this.converterStringsParaDatas([response]);
+      return response;
+    }).catch(erro => {
+      console.error('Erro ao buscar lançamento por código', erro); // Tratamento de erro
+      throw erro;
+    });
+  }
+
   excluir(codigo: number): Promise<void> {
     const headers = new HttpHeaders()
       .append('Authorization', 'Bearer YOUR_TOKEN_HERE'); // Substitua com o token correto
@@ -83,5 +112,17 @@ export class LancamentoService {
       console.error('Erro ao excluir lançamento', erro); // Tratamento de erro
       throw erro;
     });
+  }
+
+  private converterStringsParaDatas(lancamentos: Lancamento[]) {
+    for (const lancamento of lancamentos) {
+      let offset = new Date().getTimezoneOffset() * 60000;
+
+      lancamento.dataVencimento = new Date(new Date(lancamento.dataVencimento!).getTime() + offset);
+
+      if (lancamento.dataPagamento) {
+        lancamento.dataPagamento = new Date(new Date(lancamento.dataPagamento).getTime() + offset);
+      }
+    }
   }
 }

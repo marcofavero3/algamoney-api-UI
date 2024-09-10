@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
@@ -16,7 +17,8 @@ import { TooltipModule } from 'primeng/tooltip';
 import { SharedModule } from '../shared/shared.module';
 import { LancamentoCadastroComponent } from './lancamento-cadastro/lancamento-cadastro.component';
 import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
-import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.component'; // Importação do grid de lançamentos
+import { LancamentosRoutingModule } from './lancamento-routing.module';
+
 
 @NgModule({
   imports: [
@@ -34,17 +36,13 @@ import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.co
     SelectButtonModule,
     DropdownModule,
 
-    SharedModule // Certifique-se que o SharedModule esteja configurado corretamente
+    SharedModule,
+    LancamentosRoutingModule // Adicionado o LancamentosRoutingModule
   ],
   declarations: [
     LancamentoCadastroComponent,
-    LancamentosPesquisaComponent,
-    LancamentosGridComponent // Declaração do grid de lançamentos
+    LancamentosPesquisaComponent
   ],
-  exports: [
-    LancamentoCadastroComponent,
-    LancamentosPesquisaComponent,
-    LancamentosGridComponent // Exportação do grid de lançamentos
-  ]
+  exports: [] // Removido o LancamentoCadastroComponent, LancamentosPesquisaComponent, e LancamentosGridComponent
 })
 export class LancamentosModule { }

@@ -22,8 +22,8 @@ export class PessoaService {
       .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
 
     let params = new HttpParams()
-      .set('page', filtro.pagina)
-      .set('size', filtro.itensPorPagina);
+      .set('page', filtro.pagina.toString())
+      .set('size', filtro.itensPorPagina.toString());
 
     if (filtro.nome) {
       params = params.set('nome', filtro.nome);
@@ -32,11 +32,11 @@ export class PessoaService {
     return firstValueFrom(
       this.http.get<any>(`${this.pessoasUrl}`, { headers, params })
     ).then(response => {
-      const pessoas = response['content'];
+      const pessoas = response.content;
 
       const resultado = {
         pessoas,
-        total: response['totalElements']
+        total: response.totalElements
       };
 
       return resultado;
@@ -49,7 +49,7 @@ export class PessoaService {
 
     return firstValueFrom(
       this.http.get<any>(this.pessoasUrl, { headers })
-    ).then(response => response['content']);
+    ).then(response => response.content);
   }
 
   excluir(codigo: number): Promise<void> {
@@ -81,4 +81,22 @@ export class PessoaService {
     );
   }
 
+  atualizar(pessoa: Pessoa): Promise<Pessoa> {
+    const headers = new HttpHeaders()
+      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==')
+      .append('Content-Type', 'application/json');
+
+    return firstValueFrom(
+      this.http.put<Pessoa>(`${this.pessoasUrl}/${pessoa.codigo}`, pessoa, { headers })
+    );
+  }
+
+  buscarPorCodigo(codigo: number): Promise<Pessoa> {
+    const headers = new HttpHeaders()
+      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+
+    return firstValueFrom(
+      this.http.get<Pessoa>(`${this.pessoasUrl}/${codigo}`, { headers })
+    );
+  }
 }

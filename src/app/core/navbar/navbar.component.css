@@ -1,10 +1,10 @@
 .navbar {
-    padding: 10px 0;
+    padding: 20px 0 10px;
     background-color: #1e94d2;
 }
 
 .navbar-toggle {
-    color: #FFF;
+    color: #fff;
 }
 
 .navbar-menu {
@@ -14,8 +14,8 @@
     right: 0;
     width: 210px;
     margin: 0;
-    z-index: 9998;
     padding: 0;
+    z-index: 9998;
 
     background-color: #3a3633;
 
@@ -27,9 +27,9 @@
     margin-bottom: 15px;
     border-bottom: 1px solid #525151;
 
-    color: #FFF;
-    font-weight: bold;
     text-transform: uppercase;
+    font-weight: bold;
+    color: #fff;
 }
 
 .navbar-menuitem {
@@ -42,6 +42,9 @@
 }
 
 .navbar-menuitem a:hover {
-    color: #FFF;
+    color: #fff;
 }
 
+.navbar-menuitem.ativo {
+    background-color: #494541;
+}
