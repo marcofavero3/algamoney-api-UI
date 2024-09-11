@@ -40,6 +40,9 @@ export class PessoaService {
       };
 
       return resultado;
+    }).catch(erro => {
+      console.error('Erro ao buscar pessoas', erro);
+      throw erro;
     });
   }
 
@@ -49,7 +52,11 @@ export class PessoaService {
 
     return firstValueFrom(
       this.http.get<any>(this.pessoasUrl, { headers })
-    ).then(response => response.content);
+    ).then(response => response.content)
+      .catch(erro => {
+        console.error('Erro ao listar todas as pessoas', erro);
+        throw erro;
+      });
   }
 
   excluir(codigo: number): Promise<void> {
@@ -58,7 +65,10 @@ export class PessoaService {
 
     return firstValueFrom(
       this.http.delete<void>(`${this.pessoasUrl}/${codigo}`, { headers })
-    );
+    ).catch(erro => {
+      console.error('Erro ao excluir pessoa', erro);
+      throw erro;
+    });
   }
 
   mudarStatus(codigo: number, ativo: boolean): Promise<void> {
@@ -68,7 +78,10 @@ export class PessoaService {
 
     return firstValueFrom(
       this.http.put<void>(`${this.pessoasUrl}/${codigo}/ativo`, ativo, { headers })
-    );
+    ).catch(erro => {
+      console.error('Erro ao mudar status da pessoa', erro);
+      throw erro;
+    });
   }
 
   adicionar(pessoa: Pessoa): Promise<Pessoa> {
@@ -78,7 +91,10 @@ export class PessoaService {
 
     return firstValueFrom(
       this.http.post<Pessoa>(this.pessoasUrl, pessoa, { headers })
-    );
+    ).catch(erro => {
+      console.error('Erro ao adicionar pessoa', erro);
+      throw erro;
+    });
   }
 
   atualizar(pessoa: Pessoa): Promise<Pessoa> {
@@ -88,7 +104,10 @@ export class PessoaService {
 
     return firstValueFrom(
       this.http.put<Pessoa>(`${this.pessoasUrl}/${pessoa.codigo}`, pessoa, { headers })
-    );
+    ).catch(erro => {
+      console.error('Erro ao atualizar pessoa', erro);
+      throw erro;
+    });
   }
 
   buscarPorCodigo(codigo: number): Promise<Pessoa> {
@@ -97,6 +116,9 @@ export class PessoaService {
 
     return firstValueFrom(
       this.http.get<Pessoa>(`${this.pessoasUrl}/${codigo}`, { headers })
-    );
+    ).catch(erro => {
+      console.error('Erro ao buscar pessoa por código', erro);
+      throw erro;
+    });
   }
 }

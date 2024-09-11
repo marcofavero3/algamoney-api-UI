@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<app-navbar *ngIf="exibindoNavbar()"></app-navbar> <!-- Exibe a navbar condicionalmente -->
 
 <!-- Área onde os componentes serão carregados dinamicamente através das rotas -->
 <router-outlet></router-outlet>

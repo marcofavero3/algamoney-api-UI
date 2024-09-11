@@ -58,6 +58,18 @@ export class LancamentoService {
     });
   }
 
+  excluir(codigo: number): Promise<void> {
+    const headers = new HttpHeaders()
+      .append('Authorization', 'Bearer YOUR_TOKEN_HERE'); // Substitua com o token correto
+
+    return firstValueFrom(
+      this.http.delete<void>(`${this.lancamentosUrl}/${codigo}`, { headers })
+    ).catch(erro => {
+      console.error('Erro ao excluir lançamento', erro); // Tratamento de erro
+      throw erro;
+    });
+  }
+
   adicionar(lancamento: Lancamento): Promise<Lancamento> {
     const headers = new HttpHeaders()
       .append('Authorization', 'Bearer YOUR_TOKEN_HERE') // Substitua com o token correto
@@ -98,18 +110,6 @@ export class LancamentoService {
       return response;
     }).catch(erro => {
       console.error('Erro ao buscar lançamento por código', erro); // Tratamento de erro
-      throw erro;
-    });
-  }
-
-  excluir(codigo: number): Promise<void> {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Bearer YOUR_TOKEN_HERE'); // Substitua com o token correto
-
-    return firstValueFrom(
-      this.http.delete<void>(`${this.lancamentosUrl}/${codigo}`, { headers })
-    ).catch(erro => {
-      console.error('Erro ao excluir lançamento', erro); // Tratamento de erro
       throw erro;
     });
   }

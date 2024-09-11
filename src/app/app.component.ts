@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';  // Adicionado o Router para verificar a rota atual
 import { TranslateService } from '@ngx-translate/core';  // Certifique-se de que o TranslateService está instalado
 import { PrimeNGConfig } from 'primeng/api';
 
@@ -12,7 +13,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private config: PrimeNGConfig,
-    private translateService: TranslateService  // Injetando o TranslateService
+    private translateService: TranslateService,  // Injetando o TranslateService
+    private router: Router  // Injetando o Router para controlar a exibição da navbar
   ) { }
 
   ngOnInit() {
@@ -25,5 +27,10 @@ export class AppComponent implements OnInit {
         this.config.setTranslation(res);
       }
     });
+  }
+
+  // Função para exibir ou ocultar a navbar com base na rota
+  exibindoNavbar(): boolean {
+    return this.router.url !== '/login';  // Exibe a navbar em todas as rotas, exceto a de login
   }
 }

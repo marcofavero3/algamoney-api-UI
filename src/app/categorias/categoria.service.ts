@@ -13,12 +13,11 @@ export class CategoriaService {
 
   listarTodas(): Promise<any> {
     const headers = new HttpHeaders()
-      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg=='); // Cabeçalho de autorização básico
 
     // Utilizando firstValueFrom para substituir toPromise()
     return firstValueFrom(
       this.http.get(this.categoriasUrl, { headers })
     );
   }
-
 }

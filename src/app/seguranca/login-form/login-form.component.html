@@ -1,0 +1,49 @@
+<div class="container" style="max-width: 400px; margin: auto">
+  <form autocomplete="off" #loginForm="ngForm" (ngSubmit)="login(usuario.value, senha.value, loginForm)">
+    <div class="grid">
+      <div class="col-12 p-fluid">
+        <h1>Login</h1>
+      </div>
+
+      <div class="col-12 p-fluid">
+        <input
+          pInputText
+          type="email"
+          name="usuario"
+          placeholder="E-mail"
+          ngModel
+          required
+          #usuario="ngModel"
+        />
+        <div *ngIf="usuario.invalid && usuario.touched" class="ui-message ui-messages-error">
+          E-mail é obrigatório
+        </div>
+      </div>
+
+      <div class="col-12 p-fluid">
+        <input
+          pInputText
+          type="password"
+          name="senha"
+          placeholder="Senha"
+          ngModel
+          required
+          #senha="ngModel"
+        />
+        <div *ngIf="senha.invalid && senha.touched" class="ui-message ui-messages-error">
+          Senha é obrigatória
+        </div>
+      </div>
+
+      <div class="col-12">
+        <button
+          pButton
+          type="submit"
+          label="Login"
+          [disabled]="loginForm.invalid"
+          class="p-button p-component"
+        ></button>
+      </div>
+    </div>
+  </form>
+</div>

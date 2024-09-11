@@ -3,7 +3,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
@@ -14,11 +13,10 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../shared/shared.module';  // Certifique-se de que o SharedModule está corretamente configurado
 import { LancamentoCadastroComponent } from './lancamento-cadastro/lancamento-cadastro.component';
 import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
-import { LancamentosRoutingModule } from './lancamento-routing.module';
-
+import { LancamentosRoutingModule } from './lancamentos-routing.module';  // Certifique-se de que o nome do arquivo de rotas está correto
 
 @NgModule({
   imports: [
@@ -26,6 +24,7 @@ import { LancamentosRoutingModule } from './lancamento-routing.module';
     FormsModule,
     HttpClientModule,
 
+    // Módulos do PrimeNG
     InputNumberModule,
     InputTextModule,
     ButtonModule,
@@ -36,13 +35,13 @@ import { LancamentosRoutingModule } from './lancamento-routing.module';
     SelectButtonModule,
     DropdownModule,
 
-    SharedModule,
-    LancamentosRoutingModule // Adicionado o LancamentosRoutingModule
+    SharedModule,  // Certifique-se de que o SharedModule possui todos os componentes compartilhados
+    LancamentosRoutingModule  // Certifique-se de que o caminho está correto
   ],
   declarations: [
-    LancamentoCadastroComponent,
+    LancamentoCadastroComponent,  // Declaração dos componentes necessários
     LancamentosPesquisaComponent
   ],
-  exports: [] // Removido o LancamentoCadastroComponent, LancamentosPesquisaComponent, e LancamentosGridComponent
+  exports: []  // Se necessário exportar componentes ou módulos, adicionar aqui
 })
 export class LancamentosModule { }
