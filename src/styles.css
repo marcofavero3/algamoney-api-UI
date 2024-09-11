@@ -61,3 +61,20 @@ label {
         vertical-align: top;
     }
 }
+
+.p-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.p-button:hover {
+    background-color: #0056b3;
+}
+
+.p-table th, .p-table td {
+    padding: 10px;
+}

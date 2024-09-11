@@ -2,9 +2,9 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt'; // Adicionando o JwtModule
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { JwtHelperService } from '@auth0/angular-jwt';
-
+import { ButtonModule } from 'primeng/button'; // Importando o ButtonModule do PrimeNG
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -38,7 +38,7 @@ export function tokenGetter() {
     CoreModule,
     LancamentosModule,
     PessoasModule,
-    SegurancaModule,  // Adicionado o módulo de segurança
+    SegurancaModule,
 
     AppRoutingModule,
 
@@ -51,14 +51,16 @@ export function tokenGetter() {
       }
     }),
 
-    // Configuração JWT ALTERAR APÓS TESTES
+    // Configuração JWT
     JwtModule.forRoot({
       config: {
-        tokenGetter: tokenGetter,  // Função definida acima para pegar o token
-        allowedDomains: ['algamoneyfav-api-a413c8330ff7.herokuapp.com'], // Domínio correto
-        disallowedRoutes: ['https://algamoneyfav-api-a413c8330ff7.herokuapp.com/oauth2/token'] // Rota de token
+        tokenGetter: tokenGetter,
+        allowedDomains: ['algamoneyfav-api-a413c8330ff7.herokuapp.com'],
+        disallowedRoutes: ['https://algamoneyfav-api-a413c8330ff7.herokuapp.com/oauth2/token']
       }
-    })    
+    }),
+
+    ButtonModule // Adicionando o ButtonModule para ser utilizado globalmente
   ],
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
