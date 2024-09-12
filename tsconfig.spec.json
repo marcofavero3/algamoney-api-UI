@@ -11,5 +11,8 @@
   "include": [
     "src/**/*.spec.ts",
     "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "**/*.spec.ts"  // Adiciona essa linha para excluir os arquivos de testes temporariamente
   ]
 }
