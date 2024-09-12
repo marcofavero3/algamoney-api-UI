@@ -2,6 +2,7 @@
   <div class="container">
     <div class="grid">
       <div class="col-12">
+        <!-- Ícone de menu (hamburguer) -->
         <a href="javascript:;" class="navbar-toggle" (click)="exibindoMenu = !exibindoMenu">
           <i class="pi pi-bars"></i>
         </a>
@@ -9,21 +10,25 @@
     </div>
   </div>
 
+  <!-- Menu da navbar -->
   <ul class="navbar-menu" [hidden]="!exibindoMenu">
+    
     <!-- Exibe o nome do usuário logado -->
     <li class="navbar-usuario">{{ usuarioLogado }}</li>
     
-    <!-- Condicional para exibir apenas se o usuário tiver permissão -->
+    <!-- Exibe o link para lançamentos apenas se o usuário tiver a permissão -->
     <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="temPermissao('ROLE_PESQUISAR_LANCAMENTO')">
       <a routerLink="/lancamentos">Lançamentos</a>
     </li>
     
-    <!-- Condicional para exibir apenas se o usuário tiver permissão -->
+    <!-- Exibe o link para pessoas apenas se o usuário tiver a permissão -->
     <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="temPermissao('ROLE_PESQUISAR_PESSOA')">
       <a routerLink="/pessoas">Pessoas</a>
     </li>
     
     <!-- Opção de logout -->
-    <li class="navbar-menuitem"><a href="javascript:;" (click)="logout()">Logout</a></li>
+    <li class="navbar-menuitem">
+      <a href="javascript:;" (click)="logout()">Logout</a>
+    </li>
   </ul>
 </nav>

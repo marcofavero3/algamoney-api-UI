@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 export class AuthService {
 
   private tokensRevokeUrl = `${environment.apiUrl}/tokens/revoke`;
-  private oauthTokenUrl = `${environment.apiUrl}/oauth2/token`;  // Atualizando para o novo endpoint
+  private oauthTokenUrl = `${environment.apiUrl}/oauth2/token`;  // Atualizando para o novo endpoint correto
   private jwtPayload: any;
 
   constructor(

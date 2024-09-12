@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from './../../seguranca/auth.service'; // Verifique o caminho correto
-import { ErrorHandlerService } from './../error-handler.service'; // Verifique o caminho correto
+import { AuthService } from './../../seguranca/auth.service'; // Certifique-se de que o caminho está correto
+import { ErrorHandlerService } from './../error-handler.service'; // Certifique-se de que o caminho está correto
 
 @Component({
   selector: 'app-navbar',
@@ -20,24 +20,23 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // Aqui capturamos o nome do usuário logado a partir do getter público do jwtPayload
+    // Captura o nome do usuário logado a partir do payload JWT
     this.usuarioLogado = this.auth.getJwtPayload()?.nome || 'Usuário';
   }
 
+  // Verifica se o usuário tem permissão específica
   temPermissao(permissao: string): boolean {
-    // Verifica se o usuário tem a permissão necessária
     return this.auth.temPermissao(permissao);
   }
 
+  // Função para fazer logout e redirecionar o usuário
   logout() {
     this.auth.logout()
       .then(() => {
-        // Redireciona o usuário para a página de login após o logout
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login']); // Redireciona para a página de login
       })
       .catch(erro => {
-        // Tratamento de erro utilizando o serviço de tratamento de erros
-        this.errorHandler.handle(erro);
+        this.errorHandler.handle(erro); // Lida com erros de logout
       });
   }
 }

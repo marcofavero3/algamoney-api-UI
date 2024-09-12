@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Pessoa } from '../core/model';
+import { environment } from './../../environments/environment';  // Importando o environment para usar a URL do Heroku
 
 export class PessoaFiltro {
   nome?: string;
@@ -13,13 +14,15 @@ export class PessoaFiltro {
   providedIn: 'root'
 })
 export class PessoaService {
-  pessoasUrl = 'http://localhost:8080/pessoas';
+  pessoasUrl: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.pessoasUrl = `${environment.apiUrl}/pessoas`;  // URL para o backend do Heroku
+  }
 
   pesquisar(filtro: PessoaFiltro): Promise<any> {
     const headers = new HttpHeaders()
-      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');  // Cabeçalho de autorização básico
 
     let params = new HttpParams()
       .set('page', filtro.pagina.toString())

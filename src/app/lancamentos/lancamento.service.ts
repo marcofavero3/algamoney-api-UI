@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Lancamento } from '../core/model';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../environments/environment';  // Importando o environment
 
 export class LancamentoFiltro {
   descricao?: string;
@@ -17,7 +18,7 @@ export class LancamentoFiltro {
 })
 export class LancamentoService {
 
-  lancamentosUrl = 'http://localhost:8080/lancamentos';
+  lancamentosUrl = `${environment.apiUrl}/lancamentos`;  // Ajustando a URL para o Heroku
 
   constructor(private http: HttpClient, private datePipe: DatePipe) {}
 
