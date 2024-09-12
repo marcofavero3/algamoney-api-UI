@@ -2,6 +2,7 @@ import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import localePt from '@angular/common/locales/pt';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -16,8 +17,6 @@ import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component'
 import { NaoAutorizadoComponent } from './nao-autorizado.component';
 import { AuthService } from '../seguranca/auth.service';
 
-import { RouterModule } from '@angular/router';
-
 // Registrar o idioma português do Brasil
 registerLocaleData(localePt, 'pt-BR');
 
@@ -30,11 +29,11 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   declarations: [
     NavbarComponent,
     PaginaNaoEncontradaComponent,
-    NaoAutorizadoComponent  // Adicionando os componentes
+    NaoAutorizadoComponent  // Adicionando os componentes do código APOIO
   ],
   imports: [
     CommonModule,
-    HttpClientModule,
+    HttpClientModule,  // Importando o HttpClientModule
     RouterModule,  // Adicionado para roteamento interno
 
     // Módulos do PrimeNG

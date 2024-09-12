@@ -21,7 +21,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     // Captura o nome do usuário logado a partir do payload JWT
-    this.usuarioLogado = this.auth.getJwtPayload()?.nome || 'Usuário';
+    this.usuarioLogado = this.auth.getJwtPayload()?.nome || 'Usuário não autenticado';
   }
 
   // Verifica se o usuário tem permissão específica

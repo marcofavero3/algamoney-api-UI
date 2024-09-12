@@ -4,14 +4,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { ButtonModule } from 'primeng/button'; // Importando o ButtonModule do PrimeNG
+import { ButtonModule } from 'primeng/button';  // Adicionando PrimeNG ButtonModule
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
+import { SegurancaModule } from './seguranca/seguranca.module';
+
+// Adicionando os módulos específicos que estavam no código ATUAL
 import { LancamentosModule } from './lancamentos/lancamentos.module';
 import { PessoasModule } from './pessoas/pessoas.module';
-import { SegurancaModule } from './seguranca/seguranca.module';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -21,7 +23,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-// Função para obter o token
+// Função para obter o token JWT
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -36,9 +38,11 @@ export function tokenGetter() {
     HttpClientModule,
 
     CoreModule,
+    SegurancaModule,
+
+    // Módulos que estavam no código ATUAL
     LancamentosModule,
     PessoasModule,
-    SegurancaModule,
 
     AppRoutingModule,
 
@@ -51,7 +55,7 @@ export function tokenGetter() {
       }
     }),
 
-    // Configuração JWT
+    // Configuração JWT para autenticação
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -60,7 +64,7 @@ export function tokenGetter() {
       }
     }),
 
-    ButtonModule // Adicionando o ButtonModule para ser utilizado globalmente
+    ButtonModule // Adicionando o ButtonModule do PrimeNG
   ],
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

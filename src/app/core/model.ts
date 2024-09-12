@@ -8,11 +8,31 @@ export class Endereco {
   estado?: string;
 }
 
+export class Contato {
+  codigo?: number;
+  nome?: string;
+  email?: string;
+  telefone?: string;
+
+  constructor(
+    codigo?: number,
+    nome?: string,
+    email?: string,
+    telefone?: string
+  ) {
+    this.codigo = codigo;
+    this.nome = nome;
+    this.email = email;
+    this.telefone = telefone;
+  }
+}
+
 export class Pessoa {
   codigo?: number;
   nome?: string;
   endereco = new Endereco();
   ativo = true;
+  contatos = new Array<Contato>(); // Mantendo contatos, mesmo que no código ATUAL não esteja
 }
 
 export class Categoria {
@@ -29,4 +49,6 @@ export class Lancamento {
   observacao?: string;
   pessoa = new Pessoa();
   categoria = new Categoria();
+  anexo?: string;  // Mantendo anexo e urlAnexo
+  urlAnexo?: string;
 }

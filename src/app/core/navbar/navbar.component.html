@@ -2,7 +2,7 @@
   <div class="container">
     <div class="grid">
       <div class="col-12">
-        <!-- Ícone de menu (hamburguer) -->
+        <!-- Ícone de menu (hambúrguer) para exibir/ocultar o menu -->
         <a href="javascript:;" class="navbar-toggle" (click)="exibindoMenu = !exibindoMenu">
           <i class="pi pi-bars"></i>
         </a>
@@ -16,16 +16,26 @@
     <!-- Exibe o nome do usuário logado -->
     <li class="navbar-usuario">{{ usuarioLogado }}</li>
     
-    <!-- Exibe o link para lançamentos apenas se o usuário tiver a permissão -->
+    <!-- Exibe o link para o Dashboard se o usuário tiver permissão -->
+    <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="temPermissao('ROLE_PESQUISAR_LANCAMENTO')">
+      <a routerLink="/dashboard">Dashboard</a>
+    </li>
+
+    <!-- Exibe o link para lançamentos se o usuário tiver permissão -->
     <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="temPermissao('ROLE_PESQUISAR_LANCAMENTO')">
       <a routerLink="/lancamentos">Lançamentos</a>
     </li>
-    
-    <!-- Exibe o link para pessoas apenas se o usuário tiver a permissão -->
+
+    <!-- Exibe o link para pessoas se o usuário tiver permissão -->
     <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="temPermissao('ROLE_PESQUISAR_PESSOA')">
       <a routerLink="/pessoas">Pessoas</a>
     </li>
-    
+
+    <!-- Exibe o link para relatórios se o usuário tiver permissão -->
+    <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="temPermissao('ROLE_PESQUISAR_LANCAMENTO')">
+      <a routerLink="/relatorios/lancamentos">Relatórios</a>
+    </li>
+
     <!-- Opção de logout -->
     <li class="navbar-menuitem">
       <a href="javascript:;" (click)="logout()">Logout</a>
