@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ConfirmationService, MessageService, LazyLoadEvent } from 'primeng/api'; // Use LazyLoadEvent
+import { ConfirmationService, MessageService, LazyLoadEvent } from 'primeng/api';
 import { ErrorHandlerService } from '../../core/error-handler.service';
 import { PessoaFiltro, PessoaService } from '../pessoa.service';
-import { TableLazyLoadEvent } from 'primeng/table'; // Corrigido o local de importação
-
-
+import { TableLazyLoadEvent } from 'primeng/table';
 
 @Component({
   selector: 'app-pessoas-pesquisa',
@@ -42,10 +40,9 @@ export class PessoasPesquisaComponent implements OnInit {
   }
 
   aoMudarPagina(event: TableLazyLoadEvent): void {
-    const pagina = (event.first ?? 0) / (event.rows ?? 1); // Certifique-se de que 'rows' tem um valor válido
+    const pagina = (event.first ?? 0) / (event.rows ?? 1); 
     this.pesquisar(pagina);
   }
-  
 
   confirmarExclusao(pessoa: any): void {
     this.confirmationService.confirm({

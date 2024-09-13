@@ -7,19 +7,19 @@ import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos
 
 const routes: Routes = [
   {
-    path: 'lancamentos',
+    path: '',
     component: LancamentosPesquisaComponent,
     canActivate: [authGuard],  // Protegendo a rota com AuthGuard
     data: { roles: ['ROLE_PESQUISAR_LANCAMENTO'] }  // Requer permissão para pesquisar lançamentos
   },
   {
-    path: 'lancamentos/novo',
+    path: 'novo',
     component: LancamentoCadastroComponent,
     canActivate: [authGuard],  // Protegendo a rota com AuthGuard
     data: { roles: ['ROLE_CADASTRAR_LANCAMENTO'] }  // Requer permissão para cadastrar lançamentos
   },
   {
-    path: 'lancamentos/:codigo',
+    path: ':codigo',
     component: LancamentoCadastroComponent,
     canActivate: [authGuard],  // Protegendo a rota com AuthGuard
     data: { roles: ['ROLE_CADASTRAR_LANCAMENTO'] }  // Requer permissão para editar lançamentos

@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 export class AuthService {
 
   private tokensRevokeUrl = `${environment.apiUrl}/tokens/revoke`;
-  private oauthTokenUrl = `${environment.apiUrl}/oauth2/token`;  // Atualizando para o novo endpoint correto
+  private oauthTokenUrl = `${environment.apiUrl}/oauth2/token`;  // Endpoint correto atualizado
   private jwtPayload: any;
 
   constructor(
@@ -19,12 +19,12 @@ export class AuthService {
     this.carregarToken();  // Carrega o token armazenado ao iniciar o serviço
   }
 
-  // Getter público para jwtPayload
+  // Método público para obter o jwtPayload
   getJwtPayload() {
     return this.jwtPayload;
   }
 
-  // Método de login com o username e senha
+  // Método de login utilizando username e senha
   login(usuario: string, senha: string): Promise<void> {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded')
@@ -35,17 +35,17 @@ export class AuthService {
     return this.http.post(this.oauthTokenUrl, body, { headers, withCredentials: true })
       .toPromise()
       .then((response: any) => {
-        this.armazenarToken(response['access_token']);  // Armazena o access_token
+        this.armazenarToken(response['access_token']);  // Armazena o token de acesso
       })
       .catch(response => {
         if (response.status === 400 && response.error.error === 'invalid_grant') {
-          return Promise.reject('Usuário ou senha inválida!');
+          return Promise.reject('Usuário ou senha inválidos!');
         }
         return Promise.reject(response);
       });
   }
 
-  // Renova o access token com o refresh token
+  // Método para obter um novo access token utilizando o refresh token
   obterNovoAccessToken(): Promise<void> {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded')
@@ -56,17 +56,17 @@ export class AuthService {
     return this.http.post<any>(this.oauthTokenUrl, body, { headers, withCredentials: true })
       .toPromise()
       .then((response: any) => {
-        this.armazenarToken(response['access_token']);  // Armazena o novo access_token
+        this.armazenarToken(response['access_token']);  // Armazena o novo token
         console.log('Novo access token criado!');
         return Promise.resolve();
       })
       .catch(response => {
-        console.error('Erro ao renovar token.', response);
+        console.error('Erro ao renovar o token.', response);
         return Promise.resolve();
       });
   }
 
-  // Verifica se o access token está inválido ou expirado
+  // Verifica se o access token é inválido ou expirado
   isAccessTokenInvalido(): boolean {
     const token = localStorage.getItem('token');
     return !token || this.jwtHelper.isTokenExpired(token);
@@ -77,7 +77,7 @@ export class AuthService {
     return this.jwtPayload && this.jwtPayload.authorities.includes(permissao);
   }
 
-  // Verifica se o usuário tem qualquer uma das permissões necessárias
+  // Verifica se o usuário tem pelo menos uma das permissões necessárias
   temQualquerPermissao(roles: string[]): boolean {
     for (const role of roles) {
       if (this.temPermissao(role)) {
@@ -93,7 +93,7 @@ export class AuthService {
     localStorage.setItem('token', token);
   }
 
-  // Carrega o token armazenado no localStorage
+  // Carrega o token do localStorage (caso exista)
   private carregarToken() {
     const token = localStorage.getItem('token');
     if (token) {
@@ -101,13 +101,13 @@ export class AuthService {
     }
   }
 
-  // Limpa o token armazenado (logout)
+  // Limpa o token armazenado (usado no logout)
   limparAccessToken() {
     localStorage.removeItem('token');
     this.jwtPayload = null;
   }
 
-  // Faz o logout e revoga o token no servidor
+  // Método de logout que revoga o token no servidor e o remove localmente
   logout(): Promise<void> {
     return this.http.delete(this.tokensRevokeUrl, { withCredentials: true })
       .toPromise()

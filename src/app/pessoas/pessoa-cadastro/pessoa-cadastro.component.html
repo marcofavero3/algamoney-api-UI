@@ -8,25 +8,20 @@
 
       <div class="col-12 p-fluid">
         <label for="nome">Nome</label>
-        <input pInputText id="nome" type="text" name="nome" [(ngModel)]="pessoa.nome" #nome="ngModel" [required]="true"
-          minlength="5">
+        <input pInputText id="nome" type="text" name="nome" [(ngModel)]="pessoa.nome" #nome="ngModel" [required]="true" minlength="5">
         <app-message [control]="nome.control" error="required" text="Informe o nome"></app-message>
-        <!-- A correção está na linha abaixo, onde usamos 'minlength' dentro de colchetes -->
-        <app-message [control]="nome.control" error="minlength"
-          text="Mínimo de {{ nome.errors?.['minlength']?.requiredLength }} caracteres"></app-message>
+        <app-message [control]="nome.control" error="minlength" text="Mínimo de {{ nome.errors?.['minlength']?.requiredLength }} caracteres"></app-message>
       </div>
 
       <div class="col-12 md:col-9 p-fluid">
         <label for="logradouro">Logradouro</label>
-        <input pInputText id="logradouro" type="text" name="logradouro" [(ngModel)]="pessoa.endereco.logradouro" #logradouro="ngModel"
-          [required]="true">
+        <input pInputText id="logradouro" type="text" name="logradouro" [(ngModel)]="pessoa.endereco.logradouro" #logradouro="ngModel" [required]="true">
         <app-message [control]="logradouro.control" error="required" text="Informe o logradouro"></app-message>
       </div>
 
       <div class="col-12 md:col-3 p-fluid">
         <label for="numero">Número</label>
-        <input pInputText id="numero" type="text" name="numero" [(ngModel)]="pessoa.endereco.numero" #numero="ngModel"
-          [required]="true">
+        <input pInputText id="numero" type="text" name="numero" [(ngModel)]="pessoa.endereco.numero" #numero="ngModel" [required]="true">
         <app-message [control]="numero.control" error="required" text="Informe o número"></app-message>
       </div>
 
@@ -37,8 +32,7 @@
 
       <div class="col-12 md:col-4 p-fluid">
         <label for="bairro">Bairro</label>
-        <input pInputText id="bairro" type="text" name="bairro" [(ngModel)]="pessoa.endereco.bairro" #bairro="ngModel"
-          [required]="true">
+        <input pInputText id="bairro" type="text" name="bairro" [(ngModel)]="pessoa.endereco.bairro" #bairro="ngModel" [required]="true">
         <app-message [control]="bairro.control" error="required" text="Informe o bairro"></app-message>
       </div>
 
@@ -50,22 +44,26 @@
 
       <div class="col-12 md:col-6 p-fluid">
         <label for="cidade">Cidade</label>
-        <input pInputText id="cidade" type="text" name="cidade" [(ngModel)]="pessoa.endereco.cidade" #cidade="ngModel"
-          [required]="true">
+        <input pInputText id="cidade" type="text" name="cidade" [(ngModel)]="pessoa.endereco.cidade" #cidade="ngModel" [required]="true">
         <app-message [control]="cidade.control" error="required" text="Informe a cidade"></app-message>
       </div>
 
       <div class="col-12 md:col-6 p-fluid">
         <label for="estado">Estado</label>
-        <input pInputText id="estado" type="text" name="estado" [(ngModel)]="pessoa.endereco.estado" #estado="ngModel"
-          [required]="true">
+        <input pInputText id="estado" type="text" name="estado" [(ngModel)]="pessoa.endereco.estado" #estado="ngModel" [required]="true">
         <app-message [control]="estado.control" error="required" text="Informe o estado"></app-message>
+      </div>
+
+      <!-- Seção de contatos -->
+      <div class="col-12">
+        <p-panel header="Contatos">
+          <app-pessoa-cadastro-contato [contatos]="pessoa.contatos"></app-pessoa-cadastro-contato>
+        </p-panel>
       </div>
 
       <div class="col-12">
         <button pButton type="submit" label="Salvar" [disabled]="pessoasForm.invalid"></button>
         <button pButton type="button" label="Novo" class="p-button-info" (click)="nova(pessoasForm)"></button>
-
         <a [routerLink]="['/pessoas']">Voltar para a pesquisa</a>
       </div>
     </div>

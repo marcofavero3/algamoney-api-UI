@@ -1,1 +1,67 @@
-<p>pessoa-cadastro-contato works!</p>
+<div class="grid">
+    <div class="col-12">
+      <button pButton label="Novo" icon="pi pi-plus" type="button" class="p-button-raised p-button-text"
+          (click)="prepararNovoContato()"></button>
+    </div>
+    <div class="col-12">
+      <table class="p-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Telefone</th>
+            <th class="col-acoes-header"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let contato of contatos; let rowIndex = index">
+            <td>{{ contato.nome }}</td>
+            <td>{{ contato.email }}</td>
+            <td>{{ contato.telefone }}</td>
+            <td class="col-acoes">
+              <button pButton icon="pi pi-pencil" type="button" pTooltip="Editar" tooltipPosition="top"
+                  (click)="prepararEdicaoContato(contato, rowIndex)"></button>
+  
+              <button pButton icon="pi pi-trash" type="button" pTooltip="Excluir" tooltipPosition="top"
+                  (click)="removerContato(rowIndex)"></button>
+            </td>
+          </tr>
+          <tr *ngIf="contatos.length === 0">
+            <td colspan="4">Nenhum contato cadastrado</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Dialog para adicionar/editar contato -->
+  <div class="p-dialog" *ngIf="exibindoFormularioContato">
+    <div class="p-dialog-header">
+      <h2>{{ editando ? 'Edição Contato' : 'Novo Contato' }}</h2>
+    </div>
+    <div class="p-dialog-content">
+      <form #frmContato="ngForm" (ngSubmit)="confirmarContato(frmContato)">
+        <div class="col-12 p-fluid">
+          <label>Nome</label>
+          <input pInputText type="text" name="nome" required [(ngModel)]="contato.nome" #contatoNome="ngModel" />
+          <div *ngIf="contatoNome.invalid && contatoNome.touched" class="p-error">Informe o nome</div>
+        </div>
+          
+        <div class="col-12 p-fluid">
+          <label>E-mail</label>
+          <input pInputText type="email" name="email" required email [(ngModel)]="contato.email" #contatoEmail="ngModel" />
+          <div *ngIf="contatoEmail.invalid && contatoEmail.touched" class="p-error">Informe um e-mail válido</div>
+        </div>
+          
+        <div class="col-12 p-fluid">
+          <label>Telefone</label>
+          <input pInputMask name="telefone" [(ngModel)]="contato.telefone" mask="(99) 99999-999?9" />
+        </div>
+  
+        <div class="col-12">
+          <button pButton type="submit" label="Confirmar" [disabled]="frmContato.invalid"></button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

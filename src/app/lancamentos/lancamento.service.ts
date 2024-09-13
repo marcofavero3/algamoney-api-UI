@@ -18,14 +18,13 @@ export class LancamentoFiltro {
 })
 export class LancamentoService {
 
-  lancamentosUrl = `${environment.apiUrl}/lancamentos`;  // Ajustando a URL para o Heroku
+  lancamentosUrl = `${environment.apiUrl}/lancamentos`;  // Ajustando a URL para o backend
 
   constructor(private http: HttpClient, private datePipe: DatePipe) {}
 
+  // Método para pesquisar lançamentos com filtro
   pesquisar(filtro: LancamentoFiltro): Promise<any> {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Bearer YOUR_TOKEN_HERE'); // Substitua com o token correto
-
+    const headers = this.criarHeaders();
     let params = new HttpParams()
       .set('page', filtro.pagina.toString())
       .set('size', filtro.itensPorPagina.toString());
@@ -47,47 +46,43 @@ export class LancamentoService {
     ).then(response => {
       const lancamentos = response.content;
 
-      const resultado = {
+      return {
         lancamentos,
         total: response.totalElements
       };
-
-      return resultado;
     }).catch(erro => {
-      console.error('Erro ao buscar lançamentos', erro); // Tratamento de erro
+      console.error('Erro ao buscar lançamentos', erro);
       throw erro;
     });
   }
 
+  // Método para excluir lançamento
   excluir(codigo: number): Promise<void> {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Bearer YOUR_TOKEN_HERE'); // Substitua com o token correto
+    const headers = this.criarHeaders();
 
     return firstValueFrom(
       this.http.delete<void>(`${this.lancamentosUrl}/${codigo}`, { headers })
     ).catch(erro => {
-      console.error('Erro ao excluir lançamento', erro); // Tratamento de erro
+      console.error('Erro ao excluir lançamento', erro);
       throw erro;
     });
   }
 
+  // Método para adicionar lançamento
   adicionar(lancamento: Lancamento): Promise<Lancamento> {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Bearer YOUR_TOKEN_HERE') // Substitua com o token correto
-      .append('Content-Type', 'application/json');
+    const headers = this.criarHeadersComJson();
 
     return firstValueFrom(
       this.http.post<Lancamento>(this.lancamentosUrl, lancamento, { headers })
     ).catch(erro => {
-      console.error('Erro ao adicionar lançamento', erro); // Tratamento de erro
+      console.error('Erro ao adicionar lançamento', erro);
       throw erro;
     });
   }
 
+  // Método para atualizar lançamento
   atualizar(lancamento: Lancamento): Promise<Lancamento> {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Bearer YOUR_TOKEN_HERE') // Substitua com o token correto
-      .append('Content-Type', 'application/json');
+    const headers = this.criarHeadersComJson();
 
     return firstValueFrom(
       this.http.put<Lancamento>(`${this.lancamentosUrl}/${lancamento.codigo}`, lancamento, { headers })
@@ -95,14 +90,14 @@ export class LancamentoService {
       this.converterStringsParaDatas([response]);
       return response;
     }).catch(erro => {
-      console.error('Erro ao atualizar lançamento', erro); // Tratamento de erro
+      console.error('Erro ao atualizar lançamento', erro);
       throw erro;
     });
   }
 
+  // Método para buscar lançamento por código
   buscarPorCodigo(codigo: number): Promise<Lancamento> {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Bearer YOUR_TOKEN_HERE'); // Substitua com o token correto
+    const headers = this.criarHeaders();
 
     return firstValueFrom(
       this.http.get<any>(`${this.lancamentosUrl}/${codigo}`, { headers })
@@ -110,11 +105,33 @@ export class LancamentoService {
       this.converterStringsParaDatas([response]);
       return response;
     }).catch(erro => {
-      console.error('Erro ao buscar lançamento por código', erro); // Tratamento de erro
+      console.error('Erro ao buscar lançamento por código', erro);
       throw erro;
     });
   }
 
+  // Método para obter a URL de upload de anexo
+  urlUploadAnexo(): string {
+    return `${this.lancamentosUrl}/anexo`;
+  }
+
+  // Método para obter os headers para upload
+  uploadHeaders(): HttpHeaders {
+    return this.criarHeaders(); // O token está incluso neste header
+  }
+
+  // Método auxiliar para criar headers
+  private criarHeaders(): HttpHeaders {
+    return new HttpHeaders()
+      .append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+  }
+
+  // Método auxiliar para criar headers com JSON
+  private criarHeadersComJson(): HttpHeaders {
+    return this.criarHeaders().append('Content-Type', 'application/json');
+  }
+
+  // Método para converter strings para datas no formato correto
   private converterStringsParaDatas(lancamentos: Lancamento[]) {
     for (const lancamento of lancamentos) {
       let offset = new Date().getTimezoneOffset() * 60000;

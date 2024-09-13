@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api'; // LazyLoadEvent correto
-import { TableLazyLoadEvent } from 'primeng/table';
-import { Table } from 'primeng/table';
+import { ConfirmationService, MessageService } from 'primeng/api'; 
+import { Table, TableLazyLoadEvent } from 'primeng/table';  // Importando TableLazyLoadEvent
+
+import { AuthService } from './../../seguranca/auth.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
 import { LancamentoFiltro, LancamentoService } from './../lancamento.service';
 
@@ -16,10 +17,11 @@ export class LancamentosPesquisaComponent implements OnInit {
   filtro = new LancamentoFiltro();
   totalRegistros: number = 0;
   lancamentos: any[] = [];
-
+  
   @ViewChild('tabela') grid!: Table;
 
   constructor(
+    private auth: AuthService,
     private lancamentoService: LancamentoService,
     private errorHandler: ErrorHandlerService,
     private messageService: MessageService,
@@ -43,8 +45,8 @@ export class LancamentosPesquisaComponent implements OnInit {
       .catch(erro => this.errorHandler.handle(erro));
   }
 
-  aoMudarPagina(event: TableLazyLoadEvent): void {
-    const rows = event.rows ?? 10; // Fallback para 10 se 'rows' for null ou undefined
+  aoMudarPagina(event: TableLazyLoadEvent): void {  // Corrigido para TableLazyLoadEvent
+    const rows = event.rows ?? 10;  // Fallback para 10 se 'rows' for null ou undefined
     const pagina = (event.first ?? 0) / rows;  
     this.pesquisar(pagina);
   }
@@ -70,5 +72,9 @@ export class LancamentosPesquisaComponent implements OnInit {
         this.messageService.add({ severity: 'success', detail: 'Lançamento excluído com sucesso!' });
       })
       .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  naoTemPermissao(permissao: string): boolean {
+    return !this.auth.temPermissao(permissao);
   }
 }

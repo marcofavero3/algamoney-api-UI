@@ -5,6 +5,7 @@
         <h1>Login</h1>
       </div>
 
+      <!-- Campo de e-mail -->
       <div class="col-12 p-fluid">
         <input
           pInputText
@@ -15,11 +16,13 @@
           required
           #usuario="ngModel"
         />
+        <!-- Mensagem de erro se o campo de e-mail estiver inválido -->
         <div *ngIf="usuario.invalid && usuario.touched" class="ui-message ui-messages-error">
           E-mail é obrigatório
         </div>
       </div>
 
+      <!-- Campo de senha -->
       <div class="col-12 p-fluid">
         <input
           pInputText
@@ -30,11 +33,13 @@
           required
           #senha="ngModel"
         />
+        <!-- Mensagem de erro se o campo de senha estiver inválido -->
         <div *ngIf="senha.invalid && senha.touched" class="ui-message ui-messages-error">
           Senha é obrigatória
         </div>
       </div>
 
+      <!-- Botão de login -->
       <div class="col-12">
         <button
           pButton

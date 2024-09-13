@@ -8,16 +8,20 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
+import { DialogModule } from 'primeng/dialog';  // Adicionado para suporte a diálogos
+import { PanelModule } from 'primeng/panel';    // Adicionado para suporte a painéis
+
 import { SharedModule } from '../shared/shared.module';
 import { PessoasRoutingModule } from './pessoas-routing.module';
 
 import { PessoaCadastroComponent } from './pessoa-cadastro/pessoa-cadastro.component';
 import { PessoasPesquisaComponent } from './pessoas-pesquisa/pessoas-pesquisa.component';
+import { PessoaCadastroContatoComponent } from './pessoa-cadastro-contato/pessoa-cadastro-contato.component';  // Importação standalone
 
 @NgModule({
   declarations: [
     PessoaCadastroComponent,
-    PessoasPesquisaComponent
+    PessoasPesquisaComponent,
   ],
   imports: [
     CommonModule,
@@ -29,9 +33,14 @@ import { PessoasPesquisaComponent } from './pessoas-pesquisa/pessoas-pesquisa.co
     TableModule,
     TooltipModule,
     InputMaskModule,
+    DialogModule,   // Módulo de diálogo
+    PanelModule,    // Módulo de painel
 
     SharedModule,
-    PessoasRoutingModule
+    PessoasRoutingModule,
+
+    // Agora o componente standalone é importado aqui
+    PessoaCadastroContatoComponent
   ],
   exports: []
 })

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Pessoa } from '../core/model';
-import { environment } from './../../environments/environment';  // Importando o environment para usar a URL do Heroku
+import { environment } from './../../environments/environment';  // Importando o environment para usar a URL correta
 
 export class PessoaFiltro {
   nome?: string;
@@ -17,12 +17,11 @@ export class PessoaService {
   pessoasUrl: string;
 
   constructor(private http: HttpClient) {
-    this.pessoasUrl = `${environment.apiUrl}/pessoas`;  // URL para o backend do Heroku
+    this.pessoasUrl = `${environment.apiUrl}/pessoas`;  // URL para o backend
   }
 
   pesquisar(filtro: PessoaFiltro): Promise<any> {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');  // Cabeçalho de autorização básico
+    const headers = this.getAuthHeaders();  // Função para obter o cabeçalho com autenticação
 
     let params = new HttpParams()
       .set('page', filtro.pagina.toString())
@@ -33,15 +32,13 @@ export class PessoaService {
     }
 
     return firstValueFrom(
-      this.http.get<any>(`${this.pessoasUrl}`, { headers, params })
+      this.http.get<any>(this.pessoasUrl, { headers, params })
     ).then(response => {
       const pessoas = response.content;
-
       const resultado = {
         pessoas,
         total: response.totalElements
       };
-
       return resultado;
     }).catch(erro => {
       console.error('Erro ao buscar pessoas', erro);
@@ -50,8 +47,7 @@ export class PessoaService {
   }
 
   listarTodas(): Promise<any> {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+    const headers = this.getAuthHeaders();
 
     return firstValueFrom(
       this.http.get<any>(this.pessoasUrl, { headers })
@@ -63,8 +59,7 @@ export class PessoaService {
   }
 
   excluir(codigo: number): Promise<void> {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+    const headers = this.getAuthHeaders();
 
     return firstValueFrom(
       this.http.delete<void>(`${this.pessoasUrl}/${codigo}`, { headers })
@@ -75,8 +70,7 @@ export class PessoaService {
   }
 
   mudarStatus(codigo: number, ativo: boolean): Promise<void> {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==')
+    const headers = this.getAuthHeaders()
       .append('Content-Type', 'application/json');
 
     return firstValueFrom(
@@ -88,8 +82,7 @@ export class PessoaService {
   }
 
   adicionar(pessoa: Pessoa): Promise<Pessoa> {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==')
+    const headers = this.getAuthHeaders()
       .append('Content-Type', 'application/json');
 
     return firstValueFrom(
@@ -101,8 +94,7 @@ export class PessoaService {
   }
 
   atualizar(pessoa: Pessoa): Promise<Pessoa> {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==')
+    const headers = this.getAuthHeaders()
       .append('Content-Type', 'application/json');
 
     return firstValueFrom(
@@ -114,8 +106,7 @@ export class PessoaService {
   }
 
   buscarPorCodigo(codigo: number): Promise<Pessoa> {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+    const headers = this.getAuthHeaders();
 
     return firstValueFrom(
       this.http.get<Pessoa>(`${this.pessoasUrl}/${codigo}`, { headers })
@@ -123,5 +114,10 @@ export class PessoaService {
       console.error('Erro ao buscar pessoa por código', erro);
       throw erro;
     });
+  }
+
+  private getAuthHeaders(): HttpHeaders {
+    return new HttpHeaders()
+      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');  // Cabeçalho de autorização básico
   }
 }

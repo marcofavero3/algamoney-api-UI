@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { NotAuthenticatedError } from '../seguranca/money-http-interceptor';
 
-
 @Injectable({
   providedIn: 'root'
 })
